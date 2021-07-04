@@ -15,7 +15,7 @@ public class ButtonCreator {
 	KeyboardRow keyboardRow = new KeyboardRow();
 	KeyboardButton locationButton = new KeyboardButton();
 	
-	ReplyKeyboardMarkup createLocationButton() {
+	public ReplyKeyboardMarkup createLocationButton() {
 		keyboardMarkup.setResizeKeyboard(true);
 	    keyboardMarkup.setSelective(true);
 	    locationButton.setText("location parse");
@@ -33,7 +33,7 @@ public class ButtonCreator {
 	List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
 	InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
 	
-	InlineKeyboardMarkup createMenu() {
+	public InlineKeyboardMarkup createMenu() {
 		inlineKeyboardButton1.setText("Forecast");
 		inlineKeyboardButton1.setCallbackData("Forecast");
 		inlineKeyboardButton2.setText("Subscription");
