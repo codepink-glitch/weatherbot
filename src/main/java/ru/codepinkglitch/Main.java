@@ -17,11 +17,5 @@ public class Main {
 		}
 		manager.start();
 		
-		/* ConcurrentHashMap<String, User> map = User.getDataFromDB();
-		for(String key: map.keySet()) {
-			System.out.println("Key: " + key + ", " + map.get(key).getSubscription().getStatus() +
-					 ", " + map.get(key).getSubscription().getHours() + map.get(key).getSubscription().getMinutes());	
-		}
-		*/
 	}
 }
