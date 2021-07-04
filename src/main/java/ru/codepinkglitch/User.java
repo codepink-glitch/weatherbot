@@ -39,9 +39,8 @@ public class User {
 	
 	
 	public void insertIntoDB() {
-		try (var conn = DriverManager.getConnection(
-				"jdbc:mysql://localhost:3306/botdb", 
-				"Codepink_glitch", "c#%Hvf|S5YDCFgdg0#yf")) {
+		//here should be db address and db user login and password
+		try (var conn = DriverManager.getConnection()) {
 			var statement = conn.createStatement();
 			String st;
 			st = "INSERT INTO user_table VALUES (" + "\'" + getChatId() + "\'" + ", " 
@@ -60,8 +59,8 @@ public class User {
 	public static ConcurrentHashMap<String, User> getDataFromDB(){
 		List<String> ids = new ArrayList<>();
 		ConcurrentHashMap<String, User> map = new ConcurrentHashMap<>();
-		try(var conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/botdb", 
-				"Codepink_glitch", "c#%Hvf|S5YDCFgdg0#yf")) {
+		//here should be db address and db user login and password
+		try(var conn = DriverManager.getConnection()) {
 			var statement = conn.createStatement();
 			var resultSet = statement.executeQuery("SELECT chat_id FROM user_table;");
 			while(resultSet.next()) {
