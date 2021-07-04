@@ -7,13 +7,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 
 public class ConcurrentManager {
 	private static Bot bot;
-	private static ConcurrentHashMap<String, User> map;
 
 	public void setBot(Bot bot) {
 		ConcurrentManager.bot = bot;
 	}
 	public  ConcurrentManager(Bot bot, ConcurrentHashMap<String, User> map) {
-		ConcurrentManager.map = map;
 		ConcurrentManager.bot = bot;
 		BotRunnable.setBot(bot);
 		BotRunnable.setMap(map);

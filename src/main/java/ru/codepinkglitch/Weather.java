@@ -12,7 +12,7 @@ public class Weather {
 	private static final String openWeatherToken = "95cd480b515d3f849ae24d3ef01fc7e7";
 	
 	public Weather() {}
-	//Constructor for initialization from db
+
 	public Weather(double latitude, double longitude) {
 		this.latitude = latitude;
 		this.longitude = longitude;
