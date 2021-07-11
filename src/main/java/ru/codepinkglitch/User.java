@@ -9,13 +9,11 @@ import java.util.concurrent.ConcurrentHashMap;
 public class User {
 	private Subscription sub;
 	private Weather weather;
-	private String chatId;
 	private int count;
 	
-	public User(Subscription sub, Weather weather, String chatId, int count) {
+	public User(Subscription sub, Weather weather, int count) {
 		this.sub = sub;
 		this.weather = weather;
-		this.chatId = chatId;
 		this.count = count;
 	}
 	public Weather getWeather() {
@@ -30,23 +28,17 @@ public class User {
 	public int getCount() {
 		return count;
 	}
-	public String getChatId() {
-		return chatId;
-	}
-	public void setChatId(String chatId) {
-		this.chatId = chatId;
-	}
 	
 	
-	public void insertIntoDB() {
-		//here should be db address and db user login and password
-		try (var conn = DriverManager.getConnection()) {
+	public void insertIntoDB(String chatId) {
+		
+		try (var conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/botdb", "Codepink_glitch", "c#%Hvf|S5YDCFgdg0#yf")) {
 			var statement = conn.createStatement();
 			String st;
-			st = "INSERT INTO user_table VALUES (" + "\'" + getChatId() + "\'" + ", " 
+			st = "INSERT INTO user_table VALUES (" + "\'" + chatId + "\'" + ", " 
 					+ getCount() + ", " + weather.getLatitude() + ", " + weather.getLongitude() 
 					+ ", " + sub.getStatus() + ", " + sub.getHours() + ", " + sub.getMinutes()
-					+ ") ON DUPLICATE KEY UPDATE " + "chat_id=" + "\'" + getChatId() + "\'" 
+					+ ") ON DUPLICATE KEY UPDATE " + "chat_id=" + "\'" + chatId + "\'" 
 					+ ", count=" + getCount() + ", latitude=" + weather.getLatitude() 
 					+ ", longitude=" + weather.getLongitude() + ", is_active=" + sub.getStatus()
 					+ ", hours=" + sub.getHours() + ", minutes=" + sub.getMinutes() + ";";
@@ -59,8 +51,8 @@ public class User {
 	public static ConcurrentHashMap<String, User> getDataFromDB(){
 		List<String> ids = new ArrayList<>();
 		ConcurrentHashMap<String, User> map = new ConcurrentHashMap<>();
-		//here should be db address and db user login and password
-		try(var conn = DriverManager.getConnection()) {
+
+		try(var conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/botdb", "Codepink_glitch", "c#%Hvf|S5YDCFgdg0#yf")) {
 			var statement = conn.createStatement();
 			var resultSet = statement.executeQuery("SELECT chat_id FROM user_table;");
 			while(resultSet.next()) {
@@ -74,7 +66,7 @@ public class User {
 					user = new User(new Subscription(resultSet.getBoolean("is_active"), 
 							resultSet.getInt("hours"), resultSet.getInt("minutes")), 
 							new Weather(resultSet.getDouble("latitude"), resultSet.getDouble("longitude")),
-							ids.get(i), resultSet.getInt("count"));
+							resultSet.getInt("count"));
 				}
 				map.put(ids.get(i), user);
 			}

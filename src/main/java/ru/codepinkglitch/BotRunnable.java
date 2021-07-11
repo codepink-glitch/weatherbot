@@ -45,8 +45,8 @@ public class BotRunnable implements Runnable{
 			message.setChatId(chatId);
 			message.setText("Sorry, i don't reconize human speech. Only buttons or time");
 			if(map.get(chatId) == null) {
-			var newUser = new User(new Subscription(), new Weather(), chatId, 0);
-			newUser.insertIntoDB();
+			var newUser = new User(new Subscription(), new Weather(), 0);
+			newUser.insertIntoDB(chatId);
 			map.put(chatId, newUser);
 		}
 			if(map.get(chatId).getCount() == 0) {
@@ -57,14 +57,14 @@ public class BotRunnable implements Runnable{
 				message.setReplyMarkup(buttonCreator.createLocationButton());
 				var noLocationUser = map.get(chatId);
 				noLocationUser.incrementCount();
-				noLocationUser.insertIntoDB();
+				noLocationUser.insertIntoDB(chatId);
 				map.put(chatId, noLocationUser);
 			}
 			if(update.getMessage().hasLocation()) {
 				var locationUser = map.get(chatId);
 				locationUser.getWeather().setCoords(update.getMessage().getLocation().getLatitude(),
 						update.getMessage().getLocation().getLongitude());
-				locationUser.insertIntoDB();
+				locationUser.insertIntoDB(chatId);
 				map.put(chatId, locationUser);
 				message.setText("Location parsed. What you want to do?");
 				var buttonCreator1 = new ButtonCreator();
@@ -77,7 +77,7 @@ public class BotRunnable implements Runnable{
 				timeUser.getSubscription().setTime(Integer.parseInt(time[0]),
 													Integer.parseInt(time[1]));
 				timeUser.getSubscription().setScheduledMessage(scheduleTask(chatId));
-				timeUser.insertIntoDB();
+				timeUser.insertIntoDB(chatId);
 				map.put(chatId, timeUser);
 			}
 			
@@ -103,7 +103,7 @@ public class BotRunnable implements Runnable{
 				 				+ "Please indicate the time at which you  will receive a forecast. "
 				 				+ "Time format 24h : 00:00. "
 				 				+ "In case you want change the time, just type new value anytime.");
-						user.insertIntoDB();
+						user.insertIntoDB(chatId);
 						map.put(chatId, user);
 					} else {
 						message.setText("Choose new time to recieve a forecast. "
@@ -115,7 +115,7 @@ public class BotRunnable implements Runnable{
 						user.getSubscription().setStatus(false);
 						message.setText("Subscription cancelled");
 						user.getSubscription().removeScheduledMessages();
-						user.insertIntoDB();
+						user.insertIntoDB(chatId);
 						map.put(chatId, user);
 					} else {
 						message.setText("You don't have a subscription.");

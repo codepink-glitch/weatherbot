@@ -47,6 +47,7 @@ public class Subscription {
 		return timer;
 	}
 	public void setScheduledMessage(TimerTask task) {
+		if(this.hours == 25) return;
 		timer.schedule(task, date, 86400000);
 	}
 	public void removeScheduledMessages() {
